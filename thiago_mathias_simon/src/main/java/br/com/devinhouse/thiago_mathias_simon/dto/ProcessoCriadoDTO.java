@@ -3,7 +3,7 @@ package br.com.devinhouse.thiago_mathias_simon.dto;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class ProcessoReturnDTO {
+public class ProcessoCriadoDTO {
 
 	private long id;
 	private String chaveProcesso;
@@ -24,7 +24,7 @@ public class ProcessoReturnDTO {
 	public void setChaveProcesso(String chaveProcesso) {
 		this.chaveProcesso = chaveProcesso;
 	}
-	
+
 	public Date getTimestamp() {
 		return this.timestamp;
 	}
