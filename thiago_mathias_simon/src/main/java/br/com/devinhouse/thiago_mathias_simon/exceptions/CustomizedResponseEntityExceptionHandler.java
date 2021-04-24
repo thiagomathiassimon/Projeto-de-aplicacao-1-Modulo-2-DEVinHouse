@@ -3,6 +3,8 @@ package br.com.devinhouse.thiago_mathias_simon.exceptions;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -23,7 +25,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	public final ResponseEntity<Object> handleExceptionEntity(ProcessAlreadyExistException paee, WebRequest request)
 			throws Exception {
 
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), paee.getMessage(),
+		ExceptionResponse exceptionResponse = new ExceptionResponse(paee.getMessage(),
 				request.getDescription(false), BAD_REQUEST.getReasonPhrase());
 
 		return new ResponseEntity<Object>(exceptionResponse, BAD_REQUEST);
@@ -34,7 +36,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	public final ResponseEntity<Object> handleExceptionEntity(NullProcessException npe, WebRequest request)
 			throws Exception {
 
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), npe.getMessage(),
+		ExceptionResponse exceptionResponse = new ExceptionResponse(npe.getMessage(),
 				request.getDescription(false), BAD_REQUEST.getReasonPhrase());
 
 		return new ResponseEntity<Object>(exceptionResponse, BAD_REQUEST);
@@ -45,7 +47,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	public final ResponseEntity<Object> handleExceptionEntity(NoSuchElementException nsee, WebRequest request)
 			throws Exception {
 
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), nsee.getMessage(),
+		ExceptionResponse exceptionResponse = new ExceptionResponse("O processo pelo qual buscavas não foi encontrado!",
 				request.getDescription(false), NOT_FOUND.getReasonPhrase());
 
 		return new ResponseEntity<Object>(exceptionResponse, NOT_FOUND);
@@ -56,7 +58,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	public final ResponseEntity<Object> handleExceptionEntity(ProcessNotFoundException pnfe, WebRequest request)
 			throws Exception {
 
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), pnfe.getMessage(),
+		ExceptionResponse exceptionResponse = new ExceptionResponse(pnfe.getMessage(),
 				request.getDescription(false), NOT_FOUND.getReasonPhrase());
 
 		return new ResponseEntity<Object>(exceptionResponse, NOT_FOUND);

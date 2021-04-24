@@ -1,17 +1,18 @@
 package br.com.devinhouse.thiago_mathias_simon.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.com.devinhouse.thiago_mathias_simon.dto.ProcessoRemovidoDTO;
 import br.com.devinhouse.thiago_mathias_simon.dto.ProcessoCriadoDTO;
+import br.com.devinhouse.thiago_mathias_simon.dto.ProcessoRemovidoDTO;
 import br.com.devinhouse.thiago_mathias_simon.entity.ProcessoEntity;
 import br.com.devinhouse.thiago_mathias_simon.exceptions.NullProcessException;
 import br.com.devinhouse.thiago_mathias_simon.exceptions.ProcessAlreadyExistException;
 import br.com.devinhouse.thiago_mathias_simon.exceptions.ProcessNotFoundException;
 import br.com.devinhouse.thiago_mathias_simon.repository.ProcessoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProcessoService {
@@ -40,7 +41,7 @@ public class ProcessoService {
 				|| (novoProcesso.getDescricao() == null) || (novoProcesso.getCdAssunto() == null)
 				|| (novoProcesso.getDescricaoAssunto() == null) || (novoProcesso.getCdInteressado() == null)
 				|| (novoProcesso.getNmInteressado() == null)) {
-			
+
 			throw new NullProcessException("Não é possível cadastrar um processo com campos nulos!");
 		}
 
@@ -60,16 +61,20 @@ public class ProcessoService {
 		return Optional.ofNullable(processo.orElseThrow());
 	}
 
-	public ProcessoEntity buscarProcessoPorChave(ProcessoEntity chaveProcesso) {
+	public Iterable<ProcessoEntity> buscarProcessoPorChave(String chaveProcesso) {
 
 		Iterable<ProcessoEntity> todosOsProcessos = recuperarProcessos();
-
+		List<ProcessoEntity> processoFiltrados = new ArrayList<>();
+		boolean encontrouOProcesso = false;
 		for (ProcessoEntity processo : todosOsProcessos) {
-			if (processo.getChaveProcesso().equals(chaveProcesso.getChaveProcesso())) {
-				return processo;
+			if (processo.getChaveProcesso().equals(chaveProcesso)) {
+				processoFiltrados.add(processo);
+				encontrouOProcesso = true;
 			}
 		}
-
+		if (encontrouOProcesso){
+			return processoFiltrados;
+		}
 		throw new ProcessNotFoundException("O processo pelo qual buscavas não foi encontrado!");
 	}
 
@@ -120,7 +125,7 @@ public class ProcessoService {
 				return process;
 			}
 		}
-		throw new ProcessNotFoundException("O processo buscavas atualizar não foi encontrado!");
+		throw new ProcessNotFoundException("O processo que buscavas atualizar não foi encontrado!");
 	}
 
 	public ProcessoRemovidoDTO deletarProcesso(long id) {
